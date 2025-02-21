@@ -7,7 +7,7 @@ def trace(root):
     def build(v):
         if v not in nodes:
             nodes.add(v)
-            for child in v._prev:
+            for child in v.children:
                 edges.add((child, v))
                 build(child)
 
@@ -22,15 +22,18 @@ def draw_dot(root):
     for n in nodes:
         uid = str(id(n))
         # for any value in the graph, create a rectangular ('record') node for it
-        dot.node(name=uid, label="{ %s | data %.4f | grad %.4f }" % (n.label, n.data, n.grad), shape='record')
-        if n._op:
+        dot.node(name=uid, label="{ value %.4f | grad %.4f }" % (n.value, n.grad), shape='record')
+        if n.op:
             # if this value is a result of some operation, create an op node for it
-            dot.node(name=uid + n._op, label=n._op)
+            dot.node(name=uid + n.op, label=n.op)
             # and connect this node to it
-            dot.edge(uid + n._op, uid)
+            dot.edge(uid + n.op, uid)
 
     for n1, n2 in edges:
         # connect n1 to the op node of n2
-        dot.edge(str(id(n1)), str(id(n2)) + n2._op)
+        dot.edge(str(id(n1)), str(id(n2)) + n2.op)
 
     return dot
+
+def render(root):
+    draw_dot(root).render('graph', view=False, cleanup=True)

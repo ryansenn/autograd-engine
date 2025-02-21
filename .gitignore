@@ -1,3 +1,5 @@
 .idea
 changes.txt
 env/
+graph.svg
+__pycache__/
