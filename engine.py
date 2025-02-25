@@ -5,7 +5,7 @@ class Val:
         self.value = value
         self.children = children
         self.op = op
-        self.grad = 0
+        self.grad = 1
 
     def __add__(self, other):
         return Val(self.value + other.value, (self,other), "+")
@@ -16,34 +16,33 @@ class Val:
     def tanh(self):
         x = self.value
         t = (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
-        out = Val(t, (self,), 'tanh')
-        return out
+        return Val(t, (self,), 'tanh')
 
     def backward(self):
-        self.grad = 1
+        if self.op == "":
+            return None
+
+        if self.op == "*":
+            self.children[0].grad = self.children[1].value
+            self.children[1].grad = self.children[0].value
+
+        for child in self.children:
+            child.grad *= self.grad
+            child.backward()
+
+
+
     def __repr__(self):
         return f"Val({self.value})"
 
 
-# inputs x1,x2
-x1 = Val(2.0)
-x2 = Val(0.0)
+x = Val(2.0)
+w = Val(3.0)
+b = Val(-3.0)
 
-# weights w1,w2
-w1 = Val(-3.0)
-w2 = Val(1.0)
+y = w*x + b
 
-# bias of the neuron
-b = Val(6.8813735870195432)
+y.backward()
 
-# x1*w1 + x2*w2 + b
-x1w1 = x1*w1
-x2w2 = x2*w2
+render(y)
 
-x1w1x2w2 = x1w1 + x2w2
-
-n = x1w1x2w2 + b
-
-o = n.tanh()
-
-render(o)
