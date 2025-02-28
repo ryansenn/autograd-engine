@@ -1,11 +1,12 @@
 from graphviz_util import render
 import math
 class Val:
-    def __init__(self, value, children=(), op=""):
+    def __init__(self, value, children=(), op="", label=""):
         self.value = value
         self.children = children
         self.op = op
         self.grad = 1
+        self.label = label
 
     def __add__(self, other):
         return Val(self.value + other.value, (self,other), "+")
@@ -13,6 +14,11 @@ class Val:
     def __mul__(self, other):
         return Val(self.value * other.value, (self,other), "*")
 
+    def __sub__(self, other):
+        return self + other.neg()
+
+    def neg(self):
+        return self * Val(-1)
     def tanh(self):
         x = self.value
         t = (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
@@ -36,13 +42,16 @@ class Val:
         return f"Val({self.value})"
 
 
-x = Val(2.0)
-w = Val(3.0)
-b = Val(-3.0)
+x = Val(2.0, label="x")
+w = Val(3.0, label="w")
+b = Val(-3.0, label="b")
 
 y = w*x + b
+y.label="y"
+l = Val(40) - y
+l.label="l"
 
-y.backward()
+l.backward()
 
-render(y)
+render(l)
 
