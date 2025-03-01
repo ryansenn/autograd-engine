@@ -32,6 +32,9 @@ class Val:
             self.children[0].grad = self.children[1].value
             self.children[1].grad = self.children[0].value
 
+        if self.op == "tanh":
+            self.children[0].grad = 1 - (self.value * self.value)
+
         for child in self.children:
             child.grad *= self.grad
             child.backward()
@@ -46,8 +49,9 @@ x = Val(2.0, label="x")
 w = Val(3.0, label="w")
 b = Val(-3.0, label="b")
 
-y = w*x + b
+y = (w*x + b).tanh()
 y.label="y"
+
 l = Val(40) - y
 l.label="l"
 
