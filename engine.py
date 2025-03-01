@@ -1,4 +1,3 @@
-from graphviz_util import render
 import math
 class Val:
     def __init__(self, value, children=(), op="", label=""):
@@ -45,17 +44,4 @@ class Val:
         return f"Val({self.value})"
 
 
-x = Val(2.0, label="x")
-w = Val(3.0, label="w")
-b = Val(-3.0, label="b")
-
-y = (w*x + b).tanh()
-y.label="y"
-
-l = Val(40) - y
-l.label="l"
-
-l.backward()
-
-render(l)
 
