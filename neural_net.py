@@ -11,7 +11,7 @@ class Neuron:
         for i in range(len(x)):
             result += x[i] * self.w[i]
 
-        return result.tanh()
+        return result
 
 
 class Layer:
@@ -21,3 +21,17 @@ class Layer:
     def __call__(self, x):
         return [neuron(x) for neuron in self.neurons]
 
+
+class Activation:
+    def __call__(self, x):
+        return [v.tanh() for v in x]
+
+class Sequential:
+    def __init__(self, *modules):
+        self.modules = modules
+
+    def __call__(self, x):
+        for module in self.modules:
+            x = module(x)
+
+        return x
