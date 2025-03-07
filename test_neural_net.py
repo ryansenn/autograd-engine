@@ -7,6 +7,8 @@ model = Sequential(Layer(1,5),
 
 x = [Val(2)]
 
+criterion = Loss()
+
 print(model(x))
 #render(model(x)[0])
 

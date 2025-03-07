@@ -13,6 +13,12 @@ class Neuron:
 
         return result
 
+    def parameters(self):
+        for weight in self.w:
+            yield weight
+
+        yield self.b
+
 
 class Layer:
     def __init__(self, in_features, out_features):
@@ -21,10 +27,31 @@ class Layer:
     def __call__(self, x):
         return [neuron(x) for neuron in self.neurons]
 
+    def parameters(self):
+        for neuron in self.neurons:
+            neuron.parameters()
+
 
 class Activation:
     def __call__(self, x):
         return [v.tanh() for v in x]
+
+
+class Sequential:
+    def __init__(self, *layers):
+        self.layers = layers
+
+    def __call__(self, x):
+        for layer in self.layers:
+            x = layer(x)
+
+        return x
+
+    def parameters(self):
+        for layer in self.layers:
+            layer.parameters()
+
+
 
 class Loss:
     def __call__(self, model, y):
@@ -36,12 +63,10 @@ class Loss:
         return loss / Val(len(model))
 
 
-class Sequential:
-    def __init__(self, *modules):
-        self.modules = modules
-
-    def __call__(self, x):
-        for module in self.modules:
-            x = module(x)
-
-        return x
+class SGD:
+    def __init__(self, params, lr=0.1):
+        self.params = params
+        self.lr = lr
+    def step(self):
+        for param in self.params:
+            param.value = param.value - (self.lr*param.grad)
