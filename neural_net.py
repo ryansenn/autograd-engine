@@ -19,6 +19,9 @@ class Neuron:
 
         yield self.b
 
+    def __repr__(self):
+        return "w: " + str(self.w) + " b: " + str(self.b)
+
 
 class Layer:
     def __init__(self, in_features, out_features):
@@ -29,7 +32,7 @@ class Layer:
 
     def parameters(self):
         for neuron in self.neurons:
-            neuron.parameters()
+            yield from neuron.parameters()
 
 
 class Activation:
@@ -49,14 +52,13 @@ class Sequential:
 
     def parameters(self):
         for layer in self.layers:
-            layer.parameters()
+            yield from layer.parameters()
 
 
 
 class Loss:
     def __call__(self, model, y):
         loss = y[0] - model[0]
-
         for i in range(1,len(model)):
             loss += y[i] - model[i]
 
@@ -70,3 +72,7 @@ class SGD:
     def step(self):
         for param in self.params:
             param.value = param.value - (self.lr*param.grad)
+
+    def zero_grad(self):
+        for param in self.params:
+            param.grad = 0
