@@ -26,6 +26,16 @@ class Activation:
     def __call__(self, x):
         return [v.tanh() for v in x]
 
+class Loss:
+    def __call__(self, model, y):
+        loss = y[0] - model[0]
+
+        for i in range(1,len(model)):
+            loss += y[i] - model[i]
+
+        return loss / Val(len(model))
+
+
 class Sequential:
     def __init__(self, *modules):
         self.modules = modules
