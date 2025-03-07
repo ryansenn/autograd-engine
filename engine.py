@@ -16,8 +16,12 @@ class Val:
     def __sub__(self, other):
         return self + other.neg()
 
+    def __truediv__(self, other):
+        return Val(self.value / other.value, (self, other), "/")
+
     def neg(self):
         return self * Val(-1)
+
     def tanh(self):
         x = self.value
         t = (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
@@ -30,6 +34,10 @@ class Val:
         if self.op == "*":
             self.children[0].grad = self.children[1].value
             self.children[1].grad = self.children[0].value
+
+        if self.op == "/":
+            self.children[0].grad = 1/self.children[1].value
+            self.children[1].grad = -self.children[0].value/(self.children[1].value*self.children[1].value)
 
         if self.op == "tanh":
             self.children[0].grad = 1 - (self.value * self.value)
