@@ -58,17 +58,18 @@ class Sequential:
 
 class Loss:
     def __call__(self, model, y):
-        loss = y[0] - model[0]
+        loss = (y[0] - model[0]) * (y[0] - model[0])
         for i in range(1,len(model)):
-            loss += y[i] - model[i]
+            loss += (y[i] - model[i]) * (y[i] - model[i])
 
         return loss / Val(len(model))
 
 
 class SGD:
     def __init__(self, params, lr=0.1):
-        self.params = params
+        self.params = list(params)
         self.lr = lr
+
     def step(self):
         for param in self.params:
             param.value = param.value - (self.lr*param.grad)

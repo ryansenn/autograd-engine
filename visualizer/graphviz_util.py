@@ -35,5 +35,5 @@ def draw_dot(root):
 
     return dot
 
-def render(root):
-    draw_dot(root).render('graph', view=False, cleanup=True)
+def render(root, name='graph'):
+    draw_dot(root).render(name, view=False, cleanup=True)

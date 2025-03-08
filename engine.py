@@ -69,8 +69,8 @@ class Val:
                 if child not in visited:
                     visited.add(child)
                     visit(child)
-
         visit(self)
+
         queue = deque()
         for node in in_edges:
             if in_edges[node] == 0:
