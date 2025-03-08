@@ -39,6 +39,9 @@ class Activation:
     def __call__(self, x):
         return [v.tanh() for v in x]
 
+    def parameters(self):
+        yield from []
+
 
 class Sequential:
     def __init__(self, *layers):
@@ -66,7 +69,7 @@ class Loss:
 
 
 class SGD:
-    def __init__(self, params, lr=0.1):
+    def __init__(self, params, lr):
         self.params = list(params)
         self.lr = lr
 
