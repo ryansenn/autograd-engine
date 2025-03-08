@@ -5,7 +5,7 @@ class Val:
         self.value = value
         self.children = children
         self.op = op
-        self.grad = 1
+        self.grad = 0
         self.label = label
 
         if self.op == "*":
@@ -49,7 +49,8 @@ class Val:
         return Val(t, (self,), 'tanh')
 
     def _backward(self):
-        return None
+        for child in self.children:
+            child.grad += self.grad
     def backward(self):
         self.grad = 1
 
@@ -61,6 +62,7 @@ class Val:
     def topological_order(self):
         in_edges = defaultdict(int)
         visited = set()
+        in_edges[self] = 0
         def visit(node):
             for child in node.children:
                 in_edges[child] += 1
@@ -68,7 +70,8 @@ class Val:
                     visited.add(child)
                     visit(child)
 
-        queue = deque([])
+        visit(self)
+        queue = deque()
         for node in in_edges:
             if in_edges[node] == 0:
                 queue.append(node)
@@ -80,7 +83,6 @@ class Val:
 
             for child in curr.children:
                 in_edges[child] -= 1
-
                 if in_edges[child] == 0:
                     queue.append(child)
 

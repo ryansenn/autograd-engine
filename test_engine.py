@@ -19,7 +19,7 @@ w_val = Val(3.0, label="w")
 b_val = Val(-3.0, label="b")
 c_val = Val(4.0, label="c")
 
-y_val = ((w_val * x_val + b_val) / c_val)
+y_val = ((w_val * x_val + b_val) / c_val).tanh()
 y_val.label = "y"
 
 y_val.backward()
