@@ -7,13 +7,14 @@ My implementation of a minimal autograd and neural net library, inspired by karp
 ```python
 from neural_net import *
 
-model = Sequential(Layer(1, 8), Activation(), Layer(8, 1))
+model = Sequential(Layer(1, 8),
+                   Activation(),
+                   Layer(8, 1))
+
 optimizer = SGD(model.parameters(), lr=0.01)
 
-# example input and target
 x, y = [Val(0.5)], [Val(0.8)]
 
-# training loop
 for epoch in range(100):
     optimizer.zero_grad()
     loss = Loss()(model(x), y)
