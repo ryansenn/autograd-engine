@@ -49,11 +49,6 @@ def test_gradients(torch_computation, custom_computation):
     assert abs(b_torch.grad.item() - b_val.grad) < TOL, f"Gradient b mismatch: {b_torch.grad.item()} vs {b_val.grad}"
     assert abs(c_torch.grad.item() - c_val.grad) < TOL, f"Gradient c mismatch: {c_torch.grad.item()} vs {c_val.grad}"
 
-import pytest
-import torch
-from engine import Val
-
-TOL = 1e-6
 
 def test_complex_equation():
     # PyTorch setup
