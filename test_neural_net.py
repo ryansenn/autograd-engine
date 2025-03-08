@@ -1,5 +1,4 @@
 from neural_net import *
-from graphviz_util import render
 
 model = Sequential(Layer(1,1))
 

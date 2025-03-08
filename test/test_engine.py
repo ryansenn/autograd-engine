@@ -1,7 +1,7 @@
 import pytest
 import torch
 from engine import Val
-from graphviz_util import render
+from visualizer.graphviz_util import render
 
 # Tolerance for numerical comparison
 TOL = 1e-6
