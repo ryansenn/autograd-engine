@@ -1,5 +1,4 @@
-from neural_net import *
-from visualizer.graphviz_util import render
+from autograd.neural_net import *
 import random
 import numpy as np
 
@@ -28,8 +27,7 @@ def predict(model_, val):
 model = Sequential(
     Layer(1, 8),
     Activation(),
-    Layer(8, 1)
-)
+    Layer(8, 1))
 
 criterion = Loss()
 optimizer = SGD(model.parameters(), lr=0.01)
