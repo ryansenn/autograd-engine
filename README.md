@@ -2,7 +2,7 @@
 
 My implementation of a minimal autograd and neural net library, inspired by karpathy’s micrograd. 
 
-### Example
+### Example Usage
 
 ```python
 from neural_net import *
